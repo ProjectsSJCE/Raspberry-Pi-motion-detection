@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-threshold = 10
+threshold = 85000
 def diffImg(t0, t1, t2):
     d1 = cv2.absdiff(t2, t1)
     d2 = cv2.absdiff(t1, t0)
@@ -20,10 +20,17 @@ print len(new_image)
 print len(new_image[0])
 count = 0	 
 while True:
-    old_image = new_image
+#    old_image = new_image
     new_image = diffImg(t_minus, t, t_plus)
 
-    diff = sum(sum(abs(new_image - old_image)))
+    diff = sum(sum(abs(new_image)))
+    minimum = np.argmin(new_image[:, :])
+    maximum = np.argmax(new_image[:, :])
+    
+    print "hello"
+    print diff
+    print minimum
+    print maximum
     
 #    changed = 0
 #    for x in np.nditer(diff):
@@ -31,8 +38,7 @@ while True:
 #            if diff[x][y] > threshold:
 #                changed += 1
 #    print changed
-    print diff
-    if diff > 90000:
+    if diff > threshold:
         print "motion", count
         count += 1
         
